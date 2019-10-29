@@ -16,7 +16,7 @@ class OpenApiDefinitionResolver
   end
 
   def self.path(name, format)
-    "_open_api/api_specs/definitions/#{name}.#{format}"
+    "#{Rails.application.config.oas_path}/#{name}.#{format}"
   end
 
   def self.resolve(path)

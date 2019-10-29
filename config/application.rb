@@ -19,6 +19,7 @@ module NexmoDeveloper
     # the framework and any gems in your application.
 
     config.middleware.use Rack::Deflater
+    config.oas_path = ENV['OAS_PATH']
 
     config.autoload_paths << "#{Rails.root}/app/constraints"
     config.autoload_paths << "#{Rails.root}/lib"
