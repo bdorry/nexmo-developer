@@ -39,7 +39,7 @@ class SmartlingAPI
       locale = locale_without_region(locale.to_s)
       FileUtils.mkdir_p(storage_folder(locale, filename)) unless File.exist?(storage_folder(locale, filename))
       File.open("_documentation/#{locale}/#{file_uri}", 'w+') do |file|
-        file.write(I18n::SmartlingConverterFilter.call(response))
+        file.write(SmartlingPipeline.new.call(response))
       end
     end
   end
