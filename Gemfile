@@ -27,8 +27,7 @@ gem 'coffee-rails', '~> 5.0'
 gem 'jquery-rails'
 # Add clipboard for copying content
 gem 'clipboard-rails'
-# Icons!
-gem 'octicons_helper'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.9.0'
 # Use Redis adapter to run Action Cable in production
@@ -43,15 +42,6 @@ gem 'gmaps4rails'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-
-# A fast, safe and extensible Markdown to (X)HTML parser
-gem 'redcarpet', '~> 3.4.0'
-
-# Rouge aims to a be a simple, easy-to-extend drop-in replacement for pygments.
-gem 'rouge', '~> 2.0.7'
-
-# Toolkit for processing input using filters and pipelines
-gem 'banzai', '~> 0.1.2'
 
 # Nokogiri (鋸) is an HTML, XML, SAX, and Reader parser. Among Nokogiri's many features is the ability to search documents via XPath or CSS3 selectors.
 gem 'nokogiri', '~> 1.10.4'
@@ -138,7 +128,7 @@ gem 'lograge'
 gem 'countries'
 gem 'country_select', '~> 4.0'
 
-gem 'nexmo-oas-renderer', '~> 0.7', require: false
+gem 'nexmo-oas-renderer', '~> 0.7', require: false, path: '/Users/bgreenberg2/Documents/dev/nexmo-oas-renderer'
 
 gem 'smartling'
 
@@ -157,6 +147,8 @@ gem 'redis'
 gem 'barnes'
 
 gem 'actionpack-page_caching', github: 'rails/actionpack-page_caching'
+
+gem 'nexmo_markdown_renderer', path: '/Users/bgreenberg2/Documents/dev/nexmo-markdown-renderer'
 
 group :development, :test do
   gem 'awesome_print'
