@@ -23,7 +23,7 @@ class ExtendController < ApplicationController
     document_path = "#{Rails.root}/_extend/#{params[:title]}.md"
 
     document = File.read(document_path)
-    body = MarkdownPipeline.new.call(document)
+    body = Nexmo::Markdown::Renderer.new.call(document)
     frontmatter = YAML.safe_load(document)
     title = frontmatter['title']
     description = frontmatter['description']

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe MarkdownPipeline do
+RSpec.describe Nexmo::Markdown::Renderer do
   context 'inline code examples' do
     it 'highlights PHP examples that begin with <?php' do
       input = <<~HEREDOC
@@ -11,7 +11,7 @@ RSpec.describe MarkdownPipeline do
         ```
       HEREDOC
 
-      output = MarkdownPipeline.new.call(input)
+      output = Nexmo::Markdown::Renderer.new.call(input)
 
       expect(output).to include('<pre class="highlight php"><code><span class="o">&lt;?</span>')
     end
@@ -23,7 +23,7 @@ RSpec.describe MarkdownPipeline do
         ```
       HEREDOC
 
-      output = MarkdownPipeline.new.call(input)
+      output = Nexmo::Markdown::Renderer.new.call(input)
 
       expect(output).to include('<pre class="highlight php"><code><span class="k">')
     end
@@ -37,7 +37,7 @@ RSpec.describe MarkdownPipeline do
         ```
       HEREDOC
 
-      output = MarkdownPipeline.new.call(input)
+      output = Nexmo::Markdown::Renderer.new.call(input)
       expect(output).to include('<span class="nv">')
     end
 
@@ -48,7 +48,7 @@ RSpec.describe MarkdownPipeline do
         ```
       HEREDOC
 
-      output = MarkdownPipeline.new.call(input)
+      output = Nexmo::Markdown::Renderer.new.call(input)
       expect(output).to include('<span class="nv">')
     end
   end

@@ -46,7 +46,7 @@ class TutorialController < ApplicationController
     if @tutorial_step == 'prerequisites'
       @content = render_to_string(partial: 'prerequisites', layout: false)
     else
-      @content = MarkdownPipeline.new({
+      @content = Nexmo::Markdown::Renderer.new({
         code_language: @code_language,
         current_user: current_user,
       }).call(@tutorial.content_for(@tutorial_step))
@@ -68,7 +68,7 @@ class TutorialController < ApplicationController
   def single
     path = "#{Rails.root}/_tutorials/#{I18n.default_locale}/#{params[:tutorial_step]}.md"
     @content = File.read(path)
-    @content = MarkdownPipeline.new({
+    @content = Nexmo::Markdown::Renderer.new({
                                       code_language: @code_language,
                                       current_user: current_user,
                                     }).call(@content)
