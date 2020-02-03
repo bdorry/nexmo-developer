@@ -1,12 +1,12 @@
 ---
-title: Digital Marketplace Use Case
+title: Digital Marketplace
 products: client-sdk
 description: How to build your own digital marketplace application.
 languages: 
     - Node
 ---
 
-# Build Your Own Digital Marketplace
+# Digital Marketplace
 
 In this use case, you’ll learn how to build a digital marketplace. [View it in action here](https://green-crowberry.glitch.me/).
 
@@ -21,56 +21,68 @@ In this use case you learn how to use custom events in the Client SDK. Custom ev
 * A user lists a new item for sale
 * A customer purchases an item using Stripe
 
-## Make it your own
+## Prerequisites
 
-If you’d like to build your own version of this project to experiment with, you can [remix the Glitch](https://glitch.com/edit/#!/remix/green-crowberry) or [clone the GitHub repository](https://github.com/nexmo-community/client-sdk-marketplace-use-case) 
+It is assumed you have done the following:
 
-You also need to do the following:
+1. Created a [Nexmo Account](https://dashboard.nexmo.com/sign-up).
+2. Made a note of your Nexmo API key and API secret.
 
-- [Sign up for a Nexmo Account](https://dashboard.nexmo.com/sign-up) (take note of your API Key and API secret)
+## Steps
 
-![Nexmo Developer Dashboard screenshot](/assets/screenshots/use-cases/digital-marketplace-client-sdk/api-key-and-secret.png)
+1. Create a Nexmo application
+2. Authenticate your application
+3. Configure your application
 
-- [Create an Application](https://dashboard.nexmo.com/voice/your-applications). An [Application](/application/overview) is a container for your project’s security and configuration details.
+## Create a Nexmo application
 
-![Nexmo Developer Create An Application screenshot](/assets/screenshots/use-cases/digital-marketplace-client-sdk/create-an-application.png)
+You can most easily create a Nexmo Application in the Dashboard.
 
-> **Note**: We will not be using Event URL and Answer URL, so you can enter `https://example.com/event` and `https://example.com/answer` respectively.
+1. In the Dashboard go to [Your Applications](https://dashboard.nexmo.com/applications).
+2. Click **Create a new application**.
+3. Enter a name for your application, such as **Client SDK Marketplace App**.
+4. In the **Authentication** section click **Generate public and private key**. This generates a public/private key pair. The private key file is downloaded to your computer. You will use this file later.
+5. In the **Capabilities** section select RTC.
+6. For RTC capabilities you can enter an Event URL of `https://example.com/event`.
+7. Click **Generate new application**.
+8. Make a note of the generated Application ID.
 
-Click “Generate public/private key pair” to generate your public key and download the `private.key` file to your computer.
+You have now created a Nexmo application using the Dashboard.
 
-Take note of your Application ID. 
+At this point the important things are the private key file and the Application ID. You will need these for the following sections.
 
-### Authenticating your application
+## Work with existing code
 
-#### Using GitHub
+If you’d like to work with existing code to build your own version of this project to experiment with, you can do one of the following:
+
+* [Remix the Glitch project](https://glitch.com/edit/#!/remix/green-crowberry)
+* [Clone the GitHub repository](https://github.com/nexmo-community/client-sdk-marketplace-use-case)
+
+## Authenticating your application
+
+You need to authenticate your application using the private key file you [previously generated](#create-a-nexmo-application).
+
+### Using Glitch
+
+Open the `private.key` file in a text editor. Then, in your Glitch project, create the file `/.data/private.key` and copy and paste in the contents of the `private.key`:
+
+![Nexmo Application private key location Glitch screenshot](/assets/screenshots/use-cases/digital-marketplace-client-sdk/private-key-location-glitch.png)
+
+### Using GitHub
 
 Move the `private.key` file to the root of your project:
 
 ![Nexmo Application private key location local screenshot](/assets/screenshots/use-cases/digital-marketplace-client-sdk/private-key-location-local.png)
 
-#### Using Glitch
+## Configuring your application
 
-Open the `private.key` file in a text editor. Then, in your Glitch project, create the file `/.data/private.key` and copy and paste in the contents of the `private.key`.
+Regardless of whether you are remixing the Glitch project or cloning the GitHub repository, you must configure the application using the `.env` file.
 
-![Nexmo Application private key location Glitch screenshot](/assets/screenshots/use-cases/digital-marketplace-client-sdk/private-key-location-glitch.png)
+Fill in each setting using the values you noted in the preceding steps.
 
-### Configuring your application
+The structure of the `.env` file is slightly different depending on whether you are using Glitch or GitHub:
 
-Regardless of whether you are remixing the Glitch or cloning the GitHub repository, you must configure the application using the `.env` file. Fill in each setting using the values you noted in the preceding steps.
-
-The structure of the `.env` file is slightly different depending on whether you are using GitHub or Glitch:
-
-#### For GitHub
-
-```
-API_KEY="your-value-here"
-API_SECRET="your-value-here"
-APP_ID="your-value-here"
-PRIVATE_KEY="/private.key"
-```
-
-#### For Glitch
+### For Glitch
 
 ```
 DANGEROUSLY_DISABLE_HOST_CHECK=true
@@ -80,9 +92,18 @@ APP_ID="your-value-here"
 PRIVATE_KEY="/.data/private.key"
 ```
 
-Now we should be ready to go!
+### For GitHub
 
-## Walkthrough
+```
+API_KEY="your-value-here"
+API_SECRET="your-value-here"
+APP_ID="your-value-here"
+PRIVATE_KEY="/private.key"
+```
+
+This concludes all configuration.
+
+## Code walkthrough
 
 ### Login
 
@@ -153,7 +174,7 @@ The request body has properties we can use for setting the user name, display na
   };
 ```
 
-#### Authentication
+### Authentication
 
 The Client SDK authenticates using [JWTs](/concepts/guides/authentication#json-web-tokens-jwt). The application makes a call to the Node Express server to retrieve the JWT and then logs the user in.
 
@@ -202,7 +223,7 @@ app.post('/createUser', function(req, res) {
 });
 ```
 
-#### Displaying items for sale
+### Displaying items for sale
 
 When the user is logged in, we retrieve a list of all the items for sale.
 
@@ -332,11 +353,11 @@ Next, we need to load any events (like chat messages) that may have happened pri
   };
 ```
 
-#### Purchasing items
+### Purchasing items
 
 Let’s say you want to purchase the item. When you click the Pay Now button, we raise another custom event (`stripe_payment`) with the Nexmo Client SDK.
 
-> **Note**: In this use case, we simply mock the response from Stripe and leave the implementation of a payment gateway to you.
+> **NOTE:** In this use case, we simply mock the response from Stripe and leave the implementation of a payment gateway to you.
 
 *NexmoMarketplaceApp.js*
 
@@ -520,7 +541,5 @@ You might also want to consider adding more custom events to make the buying and
 ## Useful Client SDK links
 
 * [Overview](/client-sdk/overview)
-
 * [Tutorials](/client-sdk/tutorials)
-
 * [More Use Cases](/client-sdk/use-cases)
