@@ -8,11 +8,18 @@ languages:
 
 # Build Your Own Digital Marketplace
 
-In this use case, you’ll learn how to build a digital marketplace. [View it in action here.](https://green-crowberry.glitch.me/)
+In this use case, you’ll learn how to build a digital marketplace. [View it in action here](https://green-crowberry.glitch.me/).
 
-We built the application using Nexmo with React on the front end and a Node JS / Express backend.
+The example application was built using the following tools and technologies:
 
-What follows is a walkthrough of some of the more interesting parts. We focus particularly on how to use custom events in the Client SDK to alert your application when either a user lists a new item for sale, or a customer purchases an item using Stripe.
+* Nexmo Client SDK
+* React for the front end
+* Node JS / Express for the backend
+
+In this use case you learn how to use custom events in the Client SDK. Custom events are used here to alert your application when one of the following things happens:
+
+* A user lists a new item for sale
+* A customer purchases an item using Stripe
 
 ## Make it your own
 
