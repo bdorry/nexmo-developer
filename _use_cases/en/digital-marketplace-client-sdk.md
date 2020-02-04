@@ -16,7 +16,7 @@ The example application was built using the following tools and technologies:
 * React for the front end
 * Node JS / Express for the backend
 
-In this use case you learn how to use custom events in the Client SDK. Custom events are used here to alert your application when one of the following things happens:
+In this use case you use custom events in the Client SDK. Custom events are used here to alert your application when:
 
 * A user lists a new item for sale
 * A customer purchases an item using Stripe
@@ -26,13 +26,14 @@ In this use case you learn how to use custom events in the Client SDK. Custom ev
 It is assumed you have done the following:
 
 1. Created a [Nexmo Account](https://dashboard.nexmo.com/sign-up).
-2. Made a note of your Nexmo API key and API secret.
+2. Made a note of your Nexmo API key and API secret, which are displayed in the [Dashboard](https://dashboard.nexmo.com/getting-started-guide).
 
 ## Steps
 
-1. Create a Nexmo application
-2. Authenticate your application
-3. Configure your application
+1. [Create a Nexmo application](#create-a-nexmo-application)
+2. [Authenticate your application](#authenticate-your-application)
+3. [Configure your application](#configure-your-application)
+4. [Code walkthrough](#code-walkthrough)
 
 ## Create a Nexmo application
 
@@ -51,14 +52,14 @@ You have now created a Nexmo application using the Dashboard.
 
 At this point the important things are the private key file and the Application ID. You will need these for the following sections.
 
-## Work with existing code
+## Code repositories
 
 If you’d like to work with existing code to build your own version of this project to experiment with, you can do one of the following:
 
 * [Remix the Glitch project](https://glitch.com/edit/#!/remix/green-crowberry)
 * [Clone the GitHub repository](https://github.com/nexmo-community/client-sdk-marketplace-use-case)
 
-## Authenticating your application
+## Authenticate your application
 
 You need to authenticate your application using the private key file you [previously generated](#create-a-nexmo-application).
 
@@ -74,11 +75,11 @@ Move the `private.key` file to the root of your project:
 
 ![Nexmo Application private key location local screenshot](/assets/screenshots/use-cases/digital-marketplace-client-sdk/private-key-location-local.png)
 
-## Configuring your application
+## Configure your application
 
 Regardless of whether you are remixing the Glitch project or cloning the GitHub repository, you must configure the application using the `.env` file.
 
-Fill in each setting using the values you noted in the preceding steps.
+Assign each variable with the relevant value you obtained from the preceding steps.
 
 The structure of the `.env` file is slightly different depending on whether you are using Glitch or GitHub:
 
@@ -105,13 +106,15 @@ This concludes all configuration.
 
 ## Code walkthrough
 
+This section provides a walkthrough of the code of the important pieces of the application.
+
 ### Login
 
 ![Marketplace App login screenshot](/assets/screenshots/use-cases/digital-marketplace-client-sdk/app-login.png)
 
 The user enters a username and selects either the Seller or Buyer role.
 
-The request body has properties we can use for setting the user name, display name and image URL, but there is no such property for specifying the role. Fortunately, we can add our own properties in `custom_data`, so we'll create `role` in there:
+The request body has properties that can be used for setting the user name, display name and image URL, but there is no such property for specifying the role. It is possible to add your own properties in `custom_data`, so you'll create `role` in there:
 
 *NexmoMarketplaceApp.js*
 
@@ -225,7 +228,7 @@ app.post('/createUser', function(req, res) {
 
 ### Displaying items for sale
 
-When the user is logged in, we retrieve a list of all the items for sale.
+When the user is logged in, the code retrieves a list of all the items for sale.
 
 *NexmoMarketplaceApp.js*
 
@@ -271,9 +274,9 @@ If the role of Seller was selected, the application displays a form that allows 
 
 ![Marketplace App listing add item for sale screenshot](/assets/screenshots/use-cases/digital-marketplace-client-sdk/app-listing-item-for-sale.png)
 
-When you fill out the form and press ‘submit’, a call to create a Conversation is made by the Nexmo Client SDK. Once the Conversation has been created, you then join the User to the Conversation as a Member.
+When you fill out the form and press ‘submit’, a call to create a Conversation is made by the Nexmo Client SDK. Once the Conversation is created, you then join the User to the Conversation as a Member.
 
-We can alert the application that a new item has been listed for sale using a custom event called `item_details`, which passes the item details to the handler.
+The application is alerted that a new item has been listed for sale using a custom event called `item_details`, which passes the item details to the handler.
 
 *NexmoMarketplaceApp.js*
 
@@ -305,7 +308,7 @@ We can alert the application that a new item has been listed for sale using a cu
   };
 ```
 
-With that, we then get an updated list with your item at the top.
+With that, you then get an updated list with your item at the top.
 
 Go ahead and click on your item.
 
@@ -313,7 +316,7 @@ Go ahead and click on your item.
 
 Clicking on an item calls the Client SDK’s `getConversation` function.  The code checks to see if the current user is a Member of the Conversation. If not, it adds the User as a Member.
 
-Next, we need to load any events (like chat messages) that may have happened prior to the User joining the Conversation.
+Next, events are loaded (such as chat messages) that may have happened prior to the User joining the Conversation.
 
 *NexmoMarketplaceApp.js*
 
@@ -355,9 +358,9 @@ Next, we need to load any events (like chat messages) that may have happened pri
 
 ### Purchasing items
 
-Let’s say you want to purchase the item. When you click the Pay Now button, we raise another custom event (`stripe_payment`) with the Nexmo Client SDK.
+Let’s say you want to purchase the item. When you click the **Pay Now** button, another custom event (`stripe_payment`) is raised with the Nexmo Client SDK.
 
-> **NOTE:** In this use case, we simply mock the response from Stripe and leave the implementation of a payment gateway to you.
+> **NOTE:** In this use case, the response from Stripe is mocked. Implementation of a payment gateway is left to you, and depends on your preferred provider.
 
 *NexmoMarketplaceApp.js*
 
@@ -503,7 +506,7 @@ app.post('/stripePayment', function(req, res) {
 });
 ```
 
-We register a handler for the `stripe_payment` event:
+A handler is registered for the `stripe_payment` event:
 
 *NexmoMarketplaceApp.js*
 
@@ -526,20 +529,20 @@ We register a handler for the `stripe_payment` event:
   });
 ```
 
-The listener displays the payment notification as a chat message. If the payment was “successful” we update the status of the Item to Sold and update the UI.
+The listener displays the payment notification as a chat message. If the payment was "successful", the status of the Item is updated to Sold, and the UI refreshed.
 
 ## Conclusion
 
-With this Use Case, we demonstrate how to use the Nexmo Client SDK to send custom events and then listen for those events to update the state of the application.
+In this Use Case, you learned how to use the Nexmo Client SDK to send custom events, and then listen for those events to update the state of the application.
 
 ## Where Next?
 
-You will definitely want to add proper authentication if you are using this example as the basis for your production application. 
+You should add more robust authentication if you are using this example as the basis for a production application.
 
-You might also want to consider adding more custom events to make the buying and selling experience a better one for your users. Perhaps you could allow users to add items they are interested in purchasing to a list of favorites? Or enable sellers to edit an item that they have listed for sale?
+You can also add custom events to make the buying and selling experience a better one for your users. For example, you could allow users to add items they are interested in purchasing to a list of favorites. Further, you could enable sellers to edit an item that they have listed for sale.
 
-## Useful Client SDK links
+## Useful links
 
 * [Overview](/client-sdk/overview)
 * [Tutorials](/client-sdk/tutorials)
-* [More Use Cases](/client-sdk/use-cases)
+* [Use Cases](/client-sdk/use-cases)
