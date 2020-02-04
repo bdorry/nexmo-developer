@@ -30,6 +30,8 @@ It is assumed you have done the following:
 
 ## Steps
 
+The main steps in this use case are as follows:
+
 1. [Create a Nexmo application](#create-a-nexmo-application)
 2. [Authenticate your application](#authenticate-your-application)
 3. [Configure your application](#configure-your-application)
@@ -37,7 +39,7 @@ It is assumed you have done the following:
 
 ## Create a Nexmo application
 
-You can most easily create a Nexmo Application in the Dashboard.
+You can create a Nexmo Application in the Dashboard. You can do this with the following steps:
 
 1. In the Dashboard go to [Your Applications](https://dashboard.nexmo.com/applications).
 2. Click **Create a new application**.
@@ -77,13 +79,15 @@ Move the `private.key` file to the root of your project:
 
 ## Configure your application
 
-Regardless of whether you are remixing the Glitch project or cloning the GitHub repository, you must configure the application using the `.env` file.
+Whether you are remixing the Glitch project, or cloning the GitHub repository, you must configure the application using the `.env` file.
 
 Assign each variable with the relevant value you obtained from the preceding steps.
 
-The structure of the `.env` file is slightly different depending on whether you are using Glitch or GitHub:
+The structure of the `.env` file is slightly different depending on whether you are using Glitch or GitHub. The following sections show you how to edit the `.env` file.
 
 ### For Glitch
+
+Modify the `.env` to be as follows, replacing the placeholder text with your values:
 
 ```
 DANGEROUSLY_DISABLE_HOST_CHECK=true
@@ -94,6 +98,8 @@ PRIVATE_KEY="/.data/private.key"
 ```
 
 ### For GitHub
+
+Modify the `.env` to be as follows, replacing the placeholder text with your values:
 
 ```
 API_KEY="your-value-here"
@@ -106,7 +112,7 @@ This concludes all configuration.
 
 ## Code walkthrough
 
-This section provides a walkthrough of the code of the important pieces of the application.
+This section provides a walkthrough of the code for the most important pieces of the application.
 
 ### Login
 
