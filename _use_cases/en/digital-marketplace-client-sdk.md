@@ -545,11 +545,11 @@ A handler is registered for the `stripe_payment` event:
   });
 ```
 
-The listener displays the payment notification as a chat message. If the payment was "successful", the status of the Item is updated to Sold, and the UI refreshed.
+The listener displays the payment notification as a chat message. If the payment `succeeded`, the status of the Item is updated to `Sold`, and the UI refreshed.
 
 ## Conclusion
 
-In this use case, you learned how to build a digital marketplace, where you could buy and sell items. The use case demonstrated using the Nexmo Client SDK to send custom events, and then listen for those events to update the state of the application. The server code responded to requests from the client app, for example to implement authentication and return a list of Conversations.
+In this use case, you learned how to build a digital marketplace, where you could buy and sell items. The use case demonstrated build a client app using the Nexmo Client SDK to send custom events, and then listen for those events to update the state of the application. The server code responded to requests from the client app, for example to implement authentication and return a list of Conversations.
 
 ## Where Next?
 
