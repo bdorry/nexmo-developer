@@ -312,7 +312,7 @@ Field | Example | Description
 
 ## Fallback Answer URL
 
-The fallback answer webhook is reached when either the answer webook or the event webhook returns an HTTP error status or is unreachable. The data that is returned to the fallback answer URL is the same as would be received in the original answer URL or event URL.
+The fallback answer webhook is reached when either the answer webhook or the event webhook returns an HTTP error status or is unreachable. The data that is returned to the fallback answer URL is the same as would be received in the original answer URL or event URL.
 
 If there was a connection closed or reset, timeout or an HTTP status code of `429`, `503` or `504` during the initial NCCO the `answer_url` will be attempted two times, then:
 
