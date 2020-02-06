@@ -7,7 +7,7 @@ For Voice API requests, webhooks can be set at an application level, when creati
 
 ### Application-level webhooks
 
-Numbers you have purchased that are connected to Nexmo applications will use the `answer_url` to retrieve an NCCO, and the `event_url` to send call status information to you, and an optional `fallback_answer_url` in case either URL is offline or returns an HTTP error code.
+Nexmo numbers that are linked to Nexmo applications will use the `answer_url` to retrieve an NCCO, and the `event_url` to send call status information to you. The optional `fallback_answer_url` can be configured in case `answer_url` or `event_url` are offline, or return an HTTP error code.
 
 You can set these using the [Application API](/api/application), in the [Nexmo Dashboard](https://dashboard.nexmo.com) or using the [Nexmo CLI](https://github.com/nexmo/nexmo-cli) tool.
 
