@@ -16,7 +16,7 @@ class MermaidFilter < Banzai::Filter
 
   def render_mermaid(type, content)
     diagram = <<~HEREDOC
-      <div class="mermaid" style="color: transparent;">#{type} #{content.gsub('\\n', '<br />').strip}
+      <div class="mermaid" style="color: transparent;">#{type} #{content}
       </div>
     HEREDOC
 

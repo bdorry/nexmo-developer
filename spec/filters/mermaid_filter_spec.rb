@@ -9,7 +9,7 @@ RSpec.describe MermaidFilter do
       ```
     HEREDOC
 
-    expected_output = "FREEZESTARTPGRpdiBjbGFzcz0ibWVybWFpZCIgc3R5bGU9ImNvbG9yOiB0cmFuc3BhcmVudDsiPiBzZXF1ZW5jZURpYWdyYW0KVXNlciAtPiBTZXJ2ZXI6IFRlc3RpbmcKPC9kaXY-Cg==FREEZEEND\n"
+    expected_output = "FREEZESTARTPGRpdiBjbGFzcz0ibWVybWFpZCIgc3R5bGU9ImNvbG9yOiB0cmFuc3BhcmVudDsiPiAKc2VxdWVuY2VEaWFncmFtClVzZXIgLT4gU2VydmVyOiBUZXN0aW5nCgo8L2Rpdj4KFREEZEEND\n"
 
     expect(described_class.call(input)).to eq(expected_output)
   end
@@ -31,7 +31,7 @@ RSpec.describe MermaidFilter do
       ```
     HEREDOC
 
-    expected_output = "FREEZESTARTPGRpdiBjbGFzcz0ibWVybWFpZCIgc3R5bGU9ImNvbG9yOiB0cmFuc3BhcmVudDsiPnNlcXVlbmNlRGlhZ3JhbSBVc2VyIC0-IFNlcnZlcjogVGVzdGluZwo8L2Rpdj4KFREEZEEND\n"
+    expected_output = "FREEZESTARTPGRpdiBjbGFzcz0ibWVybWFpZCIgc3R5bGU9ImNvbG9yOiB0cmFuc3BhcmVudDsiPnNlcXVlbmNlRGlhZ3JhbSAKVXNlciAtPiBTZXJ2ZXI6IFRlc3RpbmcKCjwvZGl2Pgo=FREEZEEND\n"
 
     expect(described_class.call(input)).to eq(expected_output)
   end
