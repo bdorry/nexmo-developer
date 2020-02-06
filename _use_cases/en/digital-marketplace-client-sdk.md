@@ -116,15 +116,17 @@ This section provides a walkthrough of the code for the most important pieces of
 
 ### Login
 
+The login screen is shown in the following screenshot:
+
 ![Marketplace App login screenshot](/assets/screenshots/use-cases/digital-marketplace-client-sdk/app-login.png)
 
 The user enters a username and selects either the Seller or Buyer role.
 
-The request body has properties that can be used for setting the user name, display name and image URL, but there is no such property for specifying the role. It is possible to add your own properties in `custom_data`, so you'll create `role` in there:
+The `POST` request body has properties that can be used for setting the user name, display name and image URL, but there is no such property for specifying the role. It is possible to add your own properties in `custom_data`, so you can create `role` in there:
 
 *NexmoMarketplaceApp.js*
 
-```jsx
+``` jsx
   const submitUser = async (e) => {
     try{
       const results = await fetch('/createUser', {
@@ -149,47 +151,16 @@ The request body has properties that can be used for setting the user name, disp
       console.log('getJWT error: ',err);
     }
   };
-
-  // Get JWT to authenticate user
-  const getJWT = async () => {
-    try{
-      const results = await fetch('/getJWT', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: name.split(' ').join('-')
-        })
-      });
-      const data = await results.json();
-      return data.jwt;
-    } catch(err){
-      console.log('getJWT error: ',err);
-    }
-  };
-
-  // Log in the user
-  const login = async () => {
-    try{
-      const userJWT = await getJWT();
-      const app =  await new NexmoClient({ debug: false }).login(userJWT);
-      setNexmoApp(app);
-      await getConversations();
-      setStage('listings');
-    } catch(err){
-      console.log('login error: ',err);
-    }
-  };
 ```
 
 ### Authentication
 
-The Client SDK authenticates using [JWTs](/concepts/guides/authentication#json-web-tokens-jwt). The application makes a call to the Node Express server to retrieve the JWT and then logs the user in.
+The Client SDK authenticates using [JWTs](/concepts/guides/authentication#json-web-tokens-jwt). The application makes a call to the Node Express server to retrieve the JWT and then logs the user in. The code on the server side is as follows:
 
 *server.js*
 
-```js
+``` js
+...
 // the client calls this endpoint to request a JWT, passing it a username
 app.post('/getJWT', function(req, res) {
     const jwt = nexmo.generateJwt({
@@ -232,13 +203,52 @@ app.post('/createUser', function(req, res) {
 });
 ```
 
-### Displaying items for sale
-
-When the user is logged in, the code retrieves a list of all the items for sale.
+The client app itself has functions for obtaining a JWT and then logging the user in:
 
 *NexmoMarketplaceApp.js*
 
-```jsx
+``` jsx
+...
+  // Get JWT to authenticate user
+  const getJWT = async () => {
+    try{
+      const results = await fetch('/getJWT', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: name.split(' ').join('-')
+        })
+      });
+      const data = await results.json();
+      return data.jwt;
+    } catch(err){
+      console.log('getJWT error: ',err);
+    }
+  };
+
+  // Log in the user
+  const login = async () => {
+    try{
+      const userJWT = await getJWT();
+      const app =  await new NexmoClient({ debug: false }).login(userJWT);
+      setNexmoApp(app);
+      await getConversations();
+      setStage('listings');
+    } catch(err){
+      console.log('login error: ',err);
+    }
+  };
+```
+
+### Displaying items for sale
+
+When the user is logged in, the app retrieves a list of all the items for sale, which is a list of Conversation objects. The client calls the server and the server returns a list of Conversations. The client-side code is as follows:
+
+*NexmoMarketplaceApp.js*
+
+``` jsx
   // Get all conversations, even the ones the user isn't a member of, yet.
   const getConversations = async() => {
     try{
@@ -259,9 +269,11 @@ When the user is logged in, the code retrieves a list of all the items for sale.
   };
 ```
 
+The server obtains a list of Conversations and returns it to the client:
+
 *server.js*
 
-```js
+``` js
 app.post('/getConversations', function(req, res) {
     console.log('/getConversations: ',req);
     nexmo.conversations.get({page_size: req.body.page_size},(err, response) => {
@@ -276,7 +288,7 @@ app.post('/getConversations', function(req, res) {
 
 ### Listing a new item for sale
 
-If the role of Seller was selected, the application displays a form that allows the User to add an item for sale:
+If the role of Seller was selected, the application displays a form that allows the User to add an item for sale. This is shown in the following screenshot:
 
 ![Marketplace App listing add item for sale screenshot](/assets/screenshots/use-cases/digital-marketplace-client-sdk/app-listing-item-for-sale.png)
 
@@ -286,7 +298,7 @@ The application is alerted that a new item has been listed for sale using a cust
 
 *NexmoMarketplaceApp.js*
 
-```jsx
+``` jsx
   const createConversation = async() => {
     try{
       const conversation = await nexmoApp.newConversation({
@@ -314,9 +326,7 @@ The application is alerted that a new item has been listed for sale using a cust
   };
 ```
 
-With that, you then get an updated list with your item at the top.
-
-Go ahead and click on your item.
+Then application then displays an updated list with your item at the top.
 
 ### The item details page
 
@@ -326,7 +336,7 @@ Next, events are loaded (such as chat messages) that may have happened prior to 
 
 *NexmoMarketplaceApp.js*
 
-```jsx
+``` jsx
   const getConversation = async (item) => {
     try {
       const conversation = await nexmoApp.getConversation(item.uuid);
@@ -364,13 +374,13 @@ Next, events are loaded (such as chat messages) that may have happened prior to 
 
 ### Purchasing items
 
-Let’s say you want to purchase the item. When you click the **Pay Now** button, another custom event (`stripe_payment`) is raised with the Nexmo Client SDK.
+Let’s say you want to purchase the item. When you click the **Pay Now** button, another custom event, `stripe_payment`, is raised with the Nexmo Client SDK.
 
 > **NOTE:** In this use case, the response from Stripe is mocked. Implementation of a payment gateway is left to you, and depends on your preferred provider.
 
 *NexmoMarketplaceApp.js*
 
-```jsx
+``` jsx
   // Mock a Stripe Payment call. Reference: https://stripe.com/docs/api/charges/create
   const postStripePayment = async() => {
     try{
@@ -396,7 +406,7 @@ Let’s say you want to purchase the item. When you click the **Pay Now** button
 
 *server.js*
 
-```js
+``` js
 // Create a mock Stripe API Response Reference: https://stripe.com/docs/api/charges/create
 app.post('/stripePayment', function(req, res) {
     console.log('/stripePayment: ',req);
@@ -516,7 +526,7 @@ A handler is registered for the `stripe_payment` event:
 
 *NexmoMarketplaceApp.js*
 
-```jsx
+``` jsx
   useEffect(()=>{
     const setStripePayment = async (sender, event) => {
       setChatMessages(chatMessages => [...chatMessages,{sender:{user:{name:'Stripe'}}, message:{body:{text:`${event.body.paymentDetails.description}: ${event.body.paymentDetails.status}`}}, me:''}]);
@@ -539,13 +549,11 @@ The listener displays the payment notification as a chat message. If the payment
 
 ## Conclusion
 
-In this Use Case, you learned how to use the Nexmo Client SDK to send custom events, and then listen for those events to update the state of the application.
+In this use case, you learned how to build a digital marketplace, where you could buy and sell items. The use case demonstrated using the Nexmo Client SDK to send custom events, and then listen for those events to update the state of the application. The server code responded to requests from the client app, for example to implement authentication and return a list of Conversations.
 
 ## Where Next?
 
-You should add more robust authentication if you are using this example as the basis for a production application.
-
-You can also add custom events to make the buying and selling experience a better one for your users. For example, you could allow users to add items they are interested in purchasing to a list of favorites. Further, you could enable sellers to edit an item that they have listed for sale.
+You should add more robust authentication if you are using this example as the basis for a production application. You can also add custom events to make the buying and selling experience a better one for your users. For example, you could allow users to add items they are interested in purchasing to a list of favorites. Further, you could enable sellers to edit an item that they have listed for sale.
 
 ## Useful links
 
