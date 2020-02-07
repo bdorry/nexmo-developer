@@ -10,7 +10,7 @@ class SmartlingAPI
   def upload(filename)
     file_uri = file_uri(filename)
     file = Tempfile.new
-    file.write I18n::FrontmatterFilter.new.call(File.read(filename))
+    file.write Nexmo::Markdown::I18n::FrontmatterFilter.new.call(File.read(filename))
     file.rewind
 
     wrap_in_rescue do

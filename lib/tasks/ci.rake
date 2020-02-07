@@ -5,9 +5,9 @@ namespace :ci do
   task 'verify_pages': :environment do
     document_paths =
       [
-        "#{Rails.root}/_documentation/en/**/*.md",
-        "#{Rails.root}/_api/**/*.md",
-        "#{Rails.root}/_tutorials/**/*.md",
+        "#{ENV['DOCS_BASE_PATH']}/_documentation/en/**/*.md",
+        "#{ENV['DOCS_BASE_PATH']}/_api/**/*.md",
+        "#{ENV['DOCS_BASE_PATH']}/_tutorials/**/*.md",
       ]
 
     document_paths.each do |path|
@@ -117,11 +117,11 @@ namespace :ci do
   task 'check_word_blocklist': :environment do
     markdown_files =
       [
-        "#{Rails.root}/_documentation/**/*.md",
-        "#{Rails.root}/_api/**/*.md",
-        "#{Rails.root}/_tutorials/**/*.md",
-        "#{Rails.root}/_partials/*.md",
-        "#{Rails.root}/_partials/**/*.md",
+        "#{ENV['DOCS_BASE_PATH']}/_documentation/**/*.md",
+        "#{ENV['DOCS_BASE_PATH']}/_api/**/*.md",
+        "#{ENV['DOCS_BASE_PATH']}/_tutorials/**/*.md",
+        "#{ENV['DOCS_BASE_PATH']}/_partials/*.md",
+        "#{ENV['DOCS_BASE_PATH']}/_partials/**/*.md",
         "#{Rails.root}/_modals/**/*.md",
       ]
 
